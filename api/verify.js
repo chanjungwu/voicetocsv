@@ -1,5 +1,5 @@
 import { google } from 'googleapis';
-import { v4 as uuidv4 } from 'uuid'; // 用於生成唯一碼
+import { v4 as uuidv4 } from 'uuid';
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         const spreadsheetId = process.env.SHEET_ID;
 
         // 2. 讀取 Google Sheet 的所有資料
-        const range = '工作表1!A:D'; // 假設您的工作表名稱是 "工作表1"
+        const range = '工作表1!A:D'; 
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId,
             range,
@@ -32,20 +32,25 @@ export default async function handler(req, res) {
 
         // 3. 尋找匹配的紀錄
         let matchRowIndex = -1;
-        const userInputDate = new Date(`${date}T${time}:00`); // 客戶輸入的時間
+        
+        // 將使用者輸入的日期和時間（假設為台灣時間 GMT+8）轉換為一個標準的 Date 物件
+        // 格式: "YYYY-MM-DDTHH:mm:ss.sss+08:00"
+        const userInputString = `${date}T${time}:00+08:00`;
+        const userInputDate = new Date(userInputString);
 
-        for (let i = 1; i < rows.length; i++) { // 從第2行開始 (跳過標題)
+        for (let i = 1; i < rows.length; i++) {
             const row = rows[i];
             const [sheetTime, sheetAccount, sheetAmount, sheetStatus] = row;
             
-            // 檢查條件
             if (!sheetTime || !sheetAmount) continue;
+            
+            // 將 Google Sheet 中的時間字串（假設格式為 YYYY/MM/DD HH:mm）也視為台灣時間處理
+            const sheetDateString = `${sheetTime.replace(/\//g, '-')}:00+08:00`.replace(' ', 'T');
+            const sheetDate = new Date(sheetDateString);
 
-            const sheetDate = new Date(sheetTime.replace(/(\d{4})\/(\d{2})\/(\d{2})/, '$1-$2-$3'));
-            const timeDifference = Math.abs(userInputDate - sheetDate) / (1000 * 60); // 分鐘差
-
-            const isAmountMatch = parseInt(sheetAmount, 10) === parseInt(amount, 10);
-            const isTimeMatch = timeDifference <= 5; // 允許5分鐘內的誤差
+            const timeDifference = Math.abs(userInputDate - sheetDate) / (1000 * 60);
+            const isAmountMatch = parseInt(sheetAmount.trim(), 10) === parseInt(amount, 10);
+            const isTimeMatch = timeDifference <= 5; // 允許5分鐘誤差
             const isStatusAvailable = !sheetStatus || sheetStatus.trim() === '尚未使用';
 
             if (isAmountMatch && isTimeMatch && isStatusAvailable) {
@@ -71,14 +76,12 @@ export default async function handler(req, res) {
                 values: updateValues,
             },
         });
-
-        // 5. 回傳成功訊息
-        // (這裡可以加入寄送 Email 的程式碼)
         
         return res.status(200).json({ activationCode });
 
     } catch (error) {
         console.error('API Error:', error);
+        // 將詳細錯誤回傳到 Vercel 日誌，但只給前端一個通用錯誤
         return res.status(500).json({ error: '伺服器內部錯誤，請聯繫管理員。' });
     }
 }
