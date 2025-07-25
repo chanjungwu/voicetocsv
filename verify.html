@@ -1,4 +1,53 @@
-    <script>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>開通軟體 - 語音控制CSV修改系統</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body data-theme="dark">
+    <div class="container">
+        <header class="header">
+            <h1>🚀 軟體啟用驗證</h1>
+            <p>請輸入您的匯款資訊以完成驗證，並取得啟用碼。</p>
+        </header>
+
+        <main>
+            <div class="card">
+                <form id="verify-form">
+                    <div class="form-group">
+                        <label for="amount">匯款金額 (NT$)</label>
+                        <input type="number" id="amount" name="amount" placeholder="例如：250" required>
+                    </div>
+                    <div class="form-group-inline">
+                        <div class="form-group">
+                            <label for="date">匯款日期</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="time">匯款時間 (24小時制)</label>
+                            <input type="text" id="time" name="time" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" placeholder="格式 HH:MM (例如 14:30)" required>
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label for="account">您的匯款帳號後五碼</label>
+                        <input type="text" id="account" name="account" pattern="\d{5}" title="請輸入5位數字" placeholder="用於備核，請務必填寫" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">您的 Email 地址</label>
+                        <input type="email" id="email" name="email" placeholder="用於接收啟用碼備份" required>
+                    </div>
+
+                    <button type="submit" id="submit-button">驗證並取得啟用碼</button>
+                </form>
+            </div>
+
+            <div id="result" class="result-card" style="display: none;"></div>
+        </main>
+    </div>
+
+        <script>
         const form = document.getElementById('verify-form');
         const submitButton = document.getElementById('submit-button');
         const resultDiv = document.getElementById('result');
