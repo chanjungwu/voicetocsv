@@ -1,109 +1,87 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>開通軟體 - 語音控制CSV修改系統</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
-</head>
-<body data-theme="dark">
-    <div class="container">
-        <header class="header">
-            <h1>🚀 軟體啟用驗證</h1>
-            <p>請輸入您的匯款資訊以完成驗證，並取得啟用碼。</p>
-        </header>
+import { google } from 'googleapis';
+import { v4 as uuidv4 } from 'uuid';
 
-        <main>
-            <div class="card">
-                <form id="verify-form">
-                    <div class="form-group">
-                        <label for="amount">匯款金額 (NT$)</label>
-                        <input type="number" id="amount" name="amount" placeholder="例如：250" required>
-                    </div>
-                    <div class="form-group-inline">
-                        <div class="form-group">
-                            <label for="date">匯款日期</label>
-                            <input type="date" id="date" name="date" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="time">匯款時間 (24小時制)</label>
-                            <input type="text" id="time" name="time" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" placeholder="格式 HH:MM (例如 14:30)" required>
-                        </div>
-                    </div>
-                     <div class="form-group">
-                        <label for="account">您的匯款帳號後五碼</label>
-                        <input type="text" id="account" name="account" pattern="\d{5}" title="請輸入5位數字" placeholder="用於備核，請務必填寫" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">您的 Email 地址</label>
-                        <input type="email" id="email" name="email" placeholder="用於接收啟用碼備份" required>
-                    </div>
+export default async function handler(req, res) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: '僅允許 POST 請求' });
+    }
 
-                    <button type="submit" id="submit-button">驗證並取得啟用碼</button>
-                </form>
-            </div>
+    try {
+        const { amount, date, time, account, email } = req.body;
 
-            <div id="result" class="result-card" style="display: none;"></div>
-        </main>
-    </div>
-
-    <script>
-        const form = document.getElementById('verify-form');
-        const submitButton = document.getElementById('submit-button');
-        const resultDiv = document.getElementById('result');
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            submitButton.disabled = true;
-            submitButton.textContent = '驗證中...';
-            resultDiv.style.display = 'none';
-            resultDiv.className = 'result-card';
-
-            const formData = {
-                amount: document.getElementById('amount').value,
-                date: document.getElementById('date').value,
-                time: document.getElementById('time').value,
-                account: document.getElementById('account').value,
-                email: document.getElementById('email').value,
-            };
-
-            try {
-                const response = await fetch('/api/verify', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    resultDiv.className = 'result-card success';
-                    resultDiv.innerHTML = `
-                        <h3>✅ 驗證成功！</h3>
-                        <p>這是您的專屬啟用碼，請妥善保管：</p>
-                        <div class="activation-code">${data.activationCode}</div>
-                        <p class="small-text">我們也將啟用碼寄送至您的Email信箱作為備份。</p>
-                    `;
-                } else {
-                    throw new Error(data.error || '發生未知錯誤');
-                }
-            } catch (error) {
-                resultDiv.className = 'result-card error';
-                resultDiv.innerHTML = `
-                    <h3>❌ 驗證失敗</h3>
-                    <p>${error.message}</p>
-                    <p class="small-text">請檢查您輸入的資料是否與匯款紀錄完全相符。如果問題持續，請聯繫客服。</p>
-                `;
-            } finally {
-                resultDiv.style.display = 'block';
-                submitButton.disabled = false;
-                submitButton.textContent = '驗證並取得啟用碼';
-                resultDiv.scrollIntoView({ behavior: 'smooth' });
-            }
+        // 1. 認證 Google API
+        const auth = new google.auth.GoogleAuth({
+            credentials: JSON.parse(process.env.GOOGLE_CREDENTIALS),
+            scopes: ['https://www.googleapis.com/auth/spreadsheets'],
         });
-    </script>
-</body>
-</html>
+
+        const sheets = google.sheets({ version: 'v4', auth });
+        const spreadsheetId = process.env.SHEET_ID;
+
+        // 2. 讀取 Google Sheet 的所有資料
+        const range = '工作表1!A:D'; 
+        const response = await sheets.spreadsheets.values.get({
+            spreadsheetId,
+            range,
+        });
+
+        const rows = response.data.values;
+        if (!rows || rows.length === 0) {
+            return res.status(500).json({ error: '無法讀取付款紀錄表' });
+        }
+
+        // 3. 尋找匹配的紀錄
+        let matchRowIndex = -1;
+        
+        // 將使用者輸入的日期和時間（假設為台灣時間 GMT+8）轉換為一個標準的 Date 物件
+        // 格式: "YYYY-MM-DDTHH:mm:ss.sss+08:00"
+        const userInputString = `${date}T${time}:00+08:00`;
+        const userInputDate = new Date(userInputString);
+
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            const [sheetTime, sheetAccount, sheetAmount, sheetStatus] = row;
+            
+            if (!sheetTime || !sheetAmount) continue;
+            
+            // 將 Google Sheet 中的時間字串（假設格式為 YYYY/MM/DD HH:mm）也視為台灣時間處理
+            const sheetDateString = `${sheetTime.replace(/\//g, '-')}:00+08:00`.replace(' ', 'T');
+            const sheetDate = new Date(sheetDateString);
+
+            const timeDifference = Math.abs(userInputDate - sheetDate) / (1000 * 60);
+            const isAmountMatch = parseInt(sheetAmount.trim(), 10) === parseInt(amount, 10);
+            const isTimeMatch = timeDifference <= 5; // 允許5分鐘誤差
+            const isStatusAvailable = !sheetStatus || sheetStatus.trim() === '尚未使用';
+
+            if (isAmountMatch && isTimeMatch && isStatusAvailable) {
+                matchRowIndex = i;
+                break;
+            }
+        }
+
+        if (matchRowIndex === -1) {
+            return res.status(404).json({ error: '找不到匹配的付款紀錄。請確認金額和時間是否正確，或該筆紀錄已被使用。' });
+        }
+
+        // 4. 生成啟用碼並更新表格
+        const activationCode = `VOICE-CSV-${uuidv4().split('-')[0].toUpperCase()}`;
+        const updateRange = `工作表1!D${matchRowIndex + 1}`;
+        const updateValues = [[`已啟用 - ${activationCode} | Email: ${email} | 帳號: ${account}`]];
+        
+        await sheets.spreadsheets.values.update({
+            spreadsheetId,
+            range: updateRange,
+            valueInputOption: 'USER_ENTERED',
+            resource: {
+                values: updateValues,
+            },
+        });
+        
+        return res.status(200).json({ activationCode });
+
+    } catch (error) {
+        console.error('API Error:', error);
+        // 將詳細錯誤回傳到 Vercel 日誌，但只給前端一個通用錯誤
+        return res.status(500).json({ error: '伺服器內部錯誤，請聯繫管理員。' });
+    }
+}
