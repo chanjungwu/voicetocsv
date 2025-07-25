@@ -415,62 +415,15 @@
             line-height: 1.3;
         }
 
-        /* 匯款資訊卡片 */
-        .payment-info-card {
-            background: linear-gradient(135deg, var(--card-color) 0%, var(--bg-color) 100%);
-            border: 2px solid var(--accent-color);
-            border-radius: 16px;
-            padding: 40px;
-            margin: 60px auto;
-            max-width: 700px;
-            text-align: center;
-        }
-
-        .payment-info-card h3 {
-            color: var(--accent-color);
-            margin-bottom: 30px;
-            font-size: 28px;
-        }
-
-        .bank-info {
-            background-color: var(--card-color);
-            border-radius: 12px;
-            padding: 30px;
-            border: 1px solid var(--border-color);
-        }
-
-        .bank-detail {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            font-size: 18px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .bank-detail:last-child {
-            border-bottom: none;
-        }
-
-        .bank-detail strong {
-            color: var(--secondary-text);
-            font-weight: 600;
-        }
-
-        .bank-detail span {
-            color: var(--primary-text);
-            font-weight: bold;
-        }
-
-        /* 重要提醒 */
-        .important-notice {
-            display: none; /* 隱藏原本的重要提醒區塊 */
-        }
-
         /* CTA 區塊 */
         .cta-section {
             text-align: center;
             margin: 60px 0;
+        }
+        
+        .cta-section h3 {
+             color: var(--accent-color);
+             margin-bottom: 15px;
         }
 
         .cta-button {
@@ -572,21 +525,13 @@
                 transform: translateY(-8px);
             }
 
-.notice-grid {
+            .notice-grid-compact {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
             }
 
-            .bank-detail {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
-
-            .payment-info-card,
-            .important-notice {
-                margin: 40px 10px;
-                padding: 25px;
+            .payment-details-content {
+                 padding: 25px;
             }
 
             .cta-button {
@@ -605,7 +550,7 @@
     <div class="container">
         <!-- 返回按鈕 -->
         <div class="back-button">
-            <a href="javascript:window.close();">← 返回主頁</a>
+            <a href="javascript:window.history.back();">← 返回主頁</a>
         </div>
 
         <!-- 標題區域 -->
@@ -691,7 +636,7 @@
         <!-- 申請按鈕 -->
         <section class="apply-section" id="applySection">
             <div class="apply-section-content">
-                <button class="apply-button" onclick="showPaymentDetails()" disabled id="applyButton">
+                 <button class="apply-button" onclick="showPaymentDetails(); document.getElementById('finalCtaSection').style.display = 'block';" disabled id="applyButton">
                     請先選擇方案
                 </button>
             </div>
@@ -700,7 +645,7 @@
         <!-- 匯款詳細資訊（動態展開） -->
         <section class="payment-details" id="paymentDetails">
             <div class="payment-details-content">
-                <h3>💳 匯款資訊</h3>
+                <h3>💳 步驟一：完成匯款</h3>
                 <p class="payment-subtitle">請依照以下資訊進行匯款</p>
                 
                 <div class="bank-info-grid">
@@ -711,37 +656,38 @@
 
                 <div class="warning-section">
                     <div class="warning-icon">⚠️</div>
-                    <h4>重要提醒</h4>
-                    <p><strong>尚未匯款前，所有選擇均不會生效！</strong></p>
-                    <p>請完成匯款後，務必記錄以下資訊以便驗證：</p>
+                    <h4>步驟二：記下關鍵資訊</h4>
+                    <p>為了順利啟用，請務必記下您匯款時，銀行頁面顯示的：</p>
                     
                     <div class="notice-grid-compact">
                         <div class="notice-item-compact">
                             <div class="notice-icon-small">🕐</div>
-                            <div class="notice-content-compact"><strong>匯款時間</strong><p>精確到分鐘<br>格式：2025/07/24 23:06</p></div>
-                        </div>
-                        <div class="notice-item-compact">
-                            <div class="notice-icon-small">💰</div>
-                            <div class="notice-content-compact"><strong>匯款金額</strong><p>請記住確切數字<br>例如：250</p></div>
+                            <div class="notice-content-compact"><strong>匯款時間</strong><p>精確到分鐘<br>格式：14:30</p></div>
                         </div>
                         <div class="notice-item-compact">
                             <div class="notice-icon-small">🏦</div>
-                            <div class="notice-content-compact"><strong>帳號後五碼</strong><p>您的匯款帳號後五碼<br>用於身份驗證</p></div>
+                            <div class="notice-content-compact"><strong>帳號後五碼</strong><p>您的匯款帳號末5碼</p></div>
                         </div>
                         <div class="notice-item-compact">
+                            <div class="notice-icon-small">💰</div>
+                            <div class="notice-content-compact"><strong>匯款金額</strong><p>您剛才匯出的確切數字</p></div>
+                        </div>
+                         <div class="notice-item-compact">
                             <div class="notice-icon-small">📧</div>
-                            <div class="notice-content-compact"><strong>Email地址</strong><p>準備您的常用信箱<br>接收授權資訊</p></div>
+                            <div class="notice-content-compact"><strong>您的 Email</strong><p>用於接收啟用碼備份</p></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 行動按鈕 -->
-        <section class="cta-section">
+        <!-- 行動按鈕 (預設隱藏) -->
+        <section class="cta-section" id="finalCtaSection" style="display: none;">
+            <h3>步驟三：點我啟用</h3>
             <a href="verify.html" target="_blank" class="cta-button">匯款完成，立即開通軟體</a>
-            <p class="cta-subtitle">匯款後請點擊上方按鈕進行驗證，系統將自動匹配您的付款記錄</p>
+            <p class="cta-subtitle">點擊上方按鈕，輸入您記下的資訊來獲取啟用碼。</p>
         </section>
+
     </div>
 
     <script>
@@ -860,18 +806,21 @@
         }
         document.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.getElementById('themeToggle');
             if (savedTheme === 'light') {
                 document.body.setAttribute('data-theme', 'light');
-                document.getElementById('themeToggle').textContent = '☀️';
+                themeToggle.textContent = '☀️';
+                themeToggle.title = '切換到深色主題';
             } else {
-                document.getElementById('themeToggle').textContent = '🌙';
+                themeToggle.textContent = '🌙';
+                themeToggle.title = '切換到明亮主題';
             }
         });
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
-                if (target) { target.scrollIntoView({ behavior: 'smooth' }); }
+                if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
             });
         });
     </script>
