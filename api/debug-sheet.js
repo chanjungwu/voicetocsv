@@ -15,7 +15,7 @@ export default async function handler(req, res) {
         // 如果這一步失敗，代表 SHEET_ID 或權限有問題
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: process.env.SHEET_ID,
-            range: '匯款紀錄!A1:I10', // 只讀取前10行，A到I欄
+            range: '工作表1!A1:I10', // 或者使用預設的英文工作表名稱
         });
 
         const rows = response.data.values;
