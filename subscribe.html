@@ -18,8 +18,6 @@
             --border-color: #333;
             --input-bg: #2c2c2e;
         }
-
-        /* 明亮主題 */
         [data-theme="light"] {
             --bg-color: #ffffff;
             --card-color: #f8f9fa;
@@ -31,7 +29,6 @@
             --border-color: #dee2e6;
             --input-bg: #ffffff;
         }
-
         body {
             font-family: 'Segoe UI', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
             margin: 0;
@@ -41,537 +38,102 @@
             line-height: 1.7;
             transition: all 0.3s ease;
         }
-
         .container {
             max-width: 1100px;
             margin: 0 auto;
             padding: 20px;
         }
-
-        /* 主題切換按鈕 */
         .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: var(--card-color);
-            border: 2px solid var(--border-color);
-            border-radius: 50px;
-            padding: 10px 15px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
-
-        /* 返回按鈕 */
-        .back-button {
-            margin-bottom: 30px;
-            display: inline-block;
-        }
-
-        .back-button a {
-            color: var(--accent-color);
-            text-decoration: none;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .back-button a:hover {
-            color: var(--primary-text);
-        }
-
-        /* 標題區域 */
-        .header {
-            text-align: center;
-            padding: 40px 0 60px 0;
-        }
-
-        .header h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: var(--primary-text);
-        }
-
-        .header .highlight {
-            color: var(--accent-color);
-        }
-
-        .header p {
-            font-size: 20px;
-            color: var(--secondary-text);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* 價格方案 */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-
-        .pricing-card {
-            background-color: var(--card-color);
-            border: 2px solid var(--border-color);
-            border-radius: 16px;
-            padding: 40px 30px;
-            position: relative;
-            transition: all 0.3s ease;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-        }
-
-        .pricing-card.selected {
-            border-color: var(--accent-color);
-            background: linear-gradient(135deg, var(--card-color) 0%, rgba(255, 214, 10, 0.1) 100%);
-            box-shadow: 0 15px 40px rgba(255, 193, 7, 0.2);
-            transform: translateY(-8px);
-        }
-
-        .pricing-card.featured {
-            border-color: var(--accent-color);
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.2);
-        }
-
-        .pricing-card.featured:hover {
-            transform: scale(1.05) translateY(-8px);
-        }
-
-        .pricing-card.featured.selected {
-            transform: scale(1.05) translateY(-8px);
-            box-shadow: 0 20px 50px rgba(255, 193, 7, 0.3);
-        }
-
-        [data-theme="light"] .pricing-card:hover {
-            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
-        }
-
-        .popular-badge {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--accent-color) 0%, #ff9500 100%);
-            color: var(--accent-text);
-            padding: 8px 24px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: bold;
-            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
-        }
-
-        .pricing-header h3 {
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: var(--primary-text);
-        }
-
-        .price {
-            margin-bottom: 15px;
-        }
-
-        .price .currency {
-            font-size: 20px;
-            color: var(--secondary-text);
-            vertical-align: top;
-        }
-
-        .price .amount {
-            font-size: 56px;
-            font-weight: bold;
-            color: var(--accent-color);
-        }
-
-        .price .period {
-            font-size: 20px;
-            color: var(--secondary-text);
-        }
-
-        .savings {
-            color: var(--success-color);
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-
-        .pricing-features {
-            text-align: left;
-            margin-bottom: 30px;
-        }
-
-        .feature-item {
-            padding: 10px 0;
-            color: var(--primary-text);
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* 選擇指示器 */
-        .selection-indicator {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--border-color);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .pricing-card.selected .selection-indicator {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
-            color: var(--accent-text);
-            font-weight: bold;
-        }
-
-        /* 申請按鈕 */
-        .apply-section {
-            text-align: center;
-            margin: 40px 0;
-            opacity: 0;
-            transition: all 0.5s ease;
-            transform: translateY(20px);
-        }
-
-        .apply-section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .apply-button {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #ff9500 100%);
-            color: var(--accent-text);
-            padding: 18px 40px;
-            border: none;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.3);
-        }
-
-        .apply-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4);
-        }
-
-        .apply-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* 匯款資訊展開區域 */
-        .payment-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.5s ease;
-            opacity: 0;
-        }
-
-        .payment-details.expanded {
-            max-height: 1000px;
-            opacity: 1;
-            margin-top: 40px;
-        }
-
-        .payment-details-content {
-            background: linear-gradient(135deg, var(--card-color) 0%, var(--bg-color) 100%);
-            border: 2px solid var(--accent-color);
-            border-radius: 16px;
-            padding: 40px;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .payment-details h3 {
-            color: var(--accent-color);
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 15px;
-        }
-
-        .payment-subtitle {
-            text-align: center;
-            color: var(--secondary-text);
-            margin-bottom: 30px;
-            font-size: 16px;
-        }
-
-        .bank-info-grid {
-            display: grid;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .bank-info-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background-color: var(--card-color);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .bank-info-item strong {
-            color: var(--secondary-text);
-            font-weight: 600;
-        }
-
-        .bank-info-item span {
-            color: var(--primary-text);
-            font-weight: bold;
-            font-family: 'Consolas', 'Courier New', monospace;
-        }
-
-        .selected-amount {
-            color: var(--accent-color);
-            font-size: 20px;
-        }
-
-        /* 警告區塊 */
-        .warning-section {
-            background: rgba(255, 193, 7, 0.1);
-            border: 2px solid var(--accent-color);
-            border-radius: 12px;
-            padding: 25px;
-            margin: 30px 0;
-            text-align: center;
-        }
-
-        .warning-section .warning-icon {
-            font-size: 32px;
-            margin-bottom: 15px;
-        }
-
-        .warning-section h4 {
-            color: var(--accent-color);
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-
-        .warning-section p {
-            color: var(--primary-text);
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-
-        /* 緊湊型提醒網格 */
-        .notice-grid-compact {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .notice-item-compact {
-            text-align: center;
-            padding: 15px 10px;
-            background-color: var(--bg-color);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .notice-icon-small {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        .notice-content-compact strong {
-            display: block;
-            color: var(--primary-text);
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-        .notice-content-compact p {
-            color: var(--secondary-text);
-            font-size: 12px;
-            margin: 0;
-            line-height: 1.3;
-        }
-
-        /* CTA 區塊 */
-        .cta-section {
-            text-align: center;
-            margin: 60px 0;
-        }
-        
-        .cta-section h3 {
-             color: var(--accent-color);
-             margin-bottom: 15px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--accent-color) 0%, #ff9500 100%);
-            color: var(--accent-text);
-            padding: 20px 50px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-size: 20px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.3);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4);
-        }
-
-        .cta-subtitle {
-            margin-top: 20px;
-            color: var(--secondary-text);
-            font-size: 16px;
-        }
-        
-        /* 優惠碼區塊樣式 */
-        .coupon-section {
-            text-align: center;
-            margin: -20px 0 40px 0;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .coupon-content {
-            display: flex;
-            gap: 10px;
-        }
-
-        #couponInput {
-            flex-grow: 1;
-            padding: 12px 15px;
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--primary-text);
-            font-size: 16px;
-        }
-
-        #couponButton {
-            padding: 12px 25px;
-            background-color: var(--success-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .coupon-message {
-            margin-top: 10px;
-            font-size: 14px;
-            height: 20px; /* 佔據一個固定高度 */
-        }
-        
-        .coupon-message.success {
-            color: var(--success-color);
-        }
-
-        .coupon-message.error {
-            color: var(--error-color);
-        }
-
-        /* 響應式設計 */
+            position: fixed; top: 20px; right: 20px; background-color: var(--card-color); border: 2px solid var(--border-color); border-radius: 50px;
+            padding: 10px 15px; cursor: pointer; font-size: 18px; transition: all 0.3s ease; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .theme-toggle:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .back-button { margin-bottom: 30px; display: inline-block; }
+        .back-button a { color: var(--accent-color); text-decoration: none; font-size: 16px; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; }
+        .back-button a:hover { color: var(--primary-text); }
+        .header { text-align: center; padding: 40px 0 60px 0; }
+        .header h1 { font-size: 48px; margin-bottom: 20px; color: var(--primary-text); }
+        .header .highlight { color: var(--accent-color); }
+        .header p { font-size: 20px; color: var(--secondary-text); max-width: 600px; margin: 0 auto; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 60px; }
+        .pricing-card { background-color: var(--card-color); border: 2px solid var(--border-color); border-radius: 16px; padding: 40px 30px; position: relative; transition: all 0.3s ease; text-align: center; cursor: pointer; }
+        .pricing-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .pricing-card.selected { border-color: var(--accent-color); background: linear-gradient(135deg, var(--card-color) 0%, rgba(255, 214, 10, 0.1) 100%); box-shadow: 0 15px 40px rgba(255, 193, 7, 0.2); transform: translateY(-8px); }
+        .popular-badge { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--accent-color) 0%, #ff9500 100%); color: var(--accent-text); padding: 8px 24px; border-radius: 25px; font-size: 14px; font-weight: bold; box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3); }
+        .pricing-header h3 { font-size: 28px; margin-bottom: 20px; color: var(--primary-text); }
+        .price { margin-bottom: 15px; }
+        .price .currency { font-size: 20px; color: var(--secondary-text); vertical-align: top; }
+        .price .amount { font-size: 56px; font-weight: bold; color: var(--accent-color); }
+        .price .period { font-size: 20px; color: var(--secondary-text); }
+        .savings { color: var(--success-color); font-size: 16px; font-weight: bold; margin-bottom: 25px; }
+        .pricing-features { text-align: left; margin-bottom: 30px; }
+        .feature-item { padding: 10px 0; color: var(--primary-text); font-size: 16px; display: flex; align-items: center; gap: 10px; }
+        .selection-indicator { position: absolute; top: 15px; right: 15px; width: 24px; height: 24px; border: 2px solid var(--border-color); border-radius: 50%; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .pricing-card.selected .selection-indicator { background-color: var(--accent-color); border-color: var(--accent-color); color: var(--accent-text); font-weight: bold; }
+        .apply-section { text-align: center; margin: 40px 0; opacity: 0; transition: all 0.5s ease; transform: translateY(20px); }
+        .apply-section.visible { opacity: 1; transform: translateY(0); }
+        .apply-button { background: linear-gradient(135deg, var(--accent-color) 0%, #ff9500 100%); color: var(--accent-text); padding: 18px 40px; border: none; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(255, 193, 7, 0.3); }
+        .apply-button:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4); }
+        .apply-button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .payment-details { max-height: 0; overflow: hidden; transition: all 0.5s ease; opacity: 0; }
+        .payment-details.expanded { max-height: 1200px; opacity: 1; margin-top: 40px; } /* Increased max-height */
+        .payment-details-content { background: linear-gradient(135deg, var(--card-color) 0%, var(--bg-color) 100%); border: 2px solid var(--accent-color); border-radius: 16px; padding: 40px; max-width: 700px; margin: 0 auto; }
+        .payment-details h3 { color: var(--accent-color); text-align: center; font-size: 28px; margin-bottom: 15px; }
+        .payment-subtitle { text-align: center; color: var(--secondary-text); margin-bottom: 30px; font-size: 16px; }
+        .bank-info-grid { display: grid; gap: 20px; margin-bottom: 30px; }
+        .bank-info-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background-color: var(--card-color); border-radius: 8px; border: 1px solid var(--border-color); }
+        .bank-info-item strong { color: var(--secondary-text); font-weight: 600; }
+        .bank-info-item span { color: var(--primary-text); font-weight: bold; font-family: 'Consolas', 'Courier New', monospace; }
+        .selected-amount { color: var(--accent-color); font-size: 20px; }
+        .warning-section { background: rgba(255, 193, 7, 0.1); border: 2px solid var(--accent-color); border-radius: 12px; padding: 30px; margin: 30px 0; text-align: center; }
+        .warning-icon { font-size: 32px; margin-bottom: 15px; }
+        .warning-section h4 { color: var(--accent-color); font-size: 20px; margin-bottom: 15px; }
+        .warning-section p { color: var(--primary-text); font-size: 16px; margin: 0 auto 25px auto; max-width: 500px; }
+        .notice-grid-compact { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-top: 20px; justify-content: center; }
+        .notice-item-compact { text-align: center; padding: 20px 10px; background-color: var(--bg-color); border-radius: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+        .notice-icon-small { font-size: 28px; margin-bottom: 10px; color: var(--accent-color); }
+        .notice-content-compact strong { display: block; color: var(--primary-text); font-size: 14px; margin-bottom: 5px; }
+        .notice-content-compact p { color: var(--secondary-text); font-size: 12px; margin: 0; line-height: 1.4; }
+        .cta-section { text-align: center; margin: 60px 0; }
+        .cta-section h3 { color: var(--accent-color); margin-bottom: 15px; }
+        .cta-button { display: inline-block; background: linear-gradient(135deg, var(--accent-color) 0%, #ff9500 100%); color: var(--accent-text); padding: 20px 50px; border-radius: 50px; text-decoration: none; font-size: 20px; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(255, 193, 7, 0.3); }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4); }
+        .cta-subtitle { margin-top: 20px; color: var(--secondary-text); font-size: 16px; }
+        .coupon-section { text-align: center; margin: -20px 0 40px 0; max-width: 400px; margin-left: auto; margin-right: auto; }
+        .coupon-content { display: flex; gap: 10px; }
+        #couponInput { flex-grow: 1; padding: 12px 15px; background-color: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--primary-text); font-size: 16px; }
+        #couponButton { padding: 12px 25px; background-color: var(--success-color); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        .coupon-message { margin-top: 10px; font-size: 14px; height: 20px; }
+        .coupon-message.success { color: var(--success-color); }
+        .coupon-message.error { color: var(--error-color); }
         @media (max-width: 768px) {
-            .theme-toggle {
-                top: 15px;
-                right: 15px;
-                padding: 8px 12px;
-                font-size: 16px;
-            }
-
-            .header h1 {
-                font-size: 36px;
-            }
-
-            .pricing-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .pricing-card.featured {
-                transform: none;
-            }
-
-            .pricing-card.featured:hover {
-                transform: translateY(-8px);
-            }
-
-            .notice-grid-compact {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-
-            .payment-details-content {
-                 padding: 25px;
-            }
-
-            .cta-button {
-                padding: 15px 35px;
-                font-size: 18px;
-            }
+            .theme-toggle { top: 15px; right: 15px; padding: 8px 12px; font-size: 16px; }
+            .header h1 { font-size: 36px; }
+            .pricing-grid { grid-template-columns: 1fr; gap: 20px; }
+            .notice-grid-compact { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .payment-details-content { padding: 25px; }
+            .cta-button { padding: 15px 35px; font-size: 18px; }
         }
     </style>
 </head>
 <body>
-    <!-- 主題切換按鈕 -->
-    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="切換明暗主題">
-        🌙
-    </button>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="切換明暗主題">🌙</button>
 
     <div class="container">
-        <!-- 返回按鈕 -->
         <div class="back-button">
             <a href="javascript:window.history.back();">← 返回主頁</a>
         </div>
 
-        <!-- 標題區域 -->
         <header class="header">
             <h1>選擇您的<span class="highlight">專業版</span>方案</h1>
             <p>解鎖完整的語音控制功能，讓效率翻倍！選擇最適合您的訂閱方案，立即開始體驗。</p>
         </header>
 
-        <!-- 訂閱方案 -->
         <section class="pricing-section">
             <div class="pricing-grid">
                 <div class="pricing-card" data-plan="monthly" data-amount="50" data-days="30" onclick="selectPlan(this)">
                     <div class="selection-indicator">✓</div>
-                    <div class="pricing-header">
-                        <h3>月費方案</h3>
-                        <div class="price">
-                            <span class="currency">NT$</span>
-                            <span class="amount">50</span>
-                            <span class="period">/月</span>
-                        </div>
-                    </div>
+                    <div class="pricing-header"><h3>月費方案</h3><div class="price"><span class="currency">NT$</span><span class="amount">50</span><span class="period">/月</span></div></div>
                     <div class="pricing-features">
                         <div class="feature-item"><span>✓</span><span>完整語音識別功能</span></div>
                         <div class="feature-item"><span>✓</span><span>無限制CSV檔案數量</span></div>
@@ -579,19 +141,9 @@
                         <div class="feature-item"><span>✓</span><span>基礎技術支援</span></div>
                     </div>
                 </div>
-                
                 <div class="pricing-card featured" data-plan="halfyear" data-amount="285" data-days="180" onclick="selectPlan(this)">
-                    <div class="popular-badge">最受歡迎</div>
-                    <div class="selection-indicator">✓</div>
-                    <div class="pricing-header">
-                        <h3>半年方案</h3>
-                        <div class="price">
-                            <span class="currency">NT$</span>
-                            <span class="amount">285</span>
-                            <span class="period">/6個月</span>
-                        </div>
-                        <div class="savings">省下 NT$15 💰</div>
-                    </div>
+                    <div class="popular-badge">最受歡迎</div><div class="selection-indicator">✓</div>
+                    <div class="pricing-header"><h3>半年方案</h3><div class="price"><span class="currency">NT$</span><span class="amount">285</span><span class="period">/6個月</span></div><div class="savings">省下 NT$15 💰</div></div>
                     <div class="pricing-features">
                         <div class="feature-item"><span>✓</span><span>完整語音識別功能</span></div>
                         <div class="feature-item"><span>✓</span><span>無限制CSV檔案數量</span></div>
@@ -600,18 +152,9 @@
                         <div class="feature-item"><span>✓</span><span>功能更新優先體驗</span></div>
                     </div>
                 </div>
-                
                 <div class="pricing-card" data-plan="yearly" data-amount="540" data-days="365" onclick="selectPlan(this)">
                     <div class="selection-indicator">✓</div>
-                    <div class="pricing-header">
-                        <h3>年費方案</h3>
-                        <div class="price">
-                            <span class="currency">NT$</span>
-                            <span class="amount">540</span>
-                            <span class="period">/年</span>
-                        </div>
-                        <div class="savings">省下 NT$60 🎯</div>
-                    </div>
+                    <div class="pricing-header"><h3>年費方案</h3><div class="price"><span class="currency">NT$</span><span class="amount">540</span><span class="period">/年</span></div><div class="savings">省下 NT$60 🎯</div></div>
                     <div class="pricing-features">
                         <div class="feature-item"><span>✓</span><span>完整語音識別功能</span></div>
                         <div class="feature-item"><span>✓</span><span>無限制CSV檔案數量</span></div>
@@ -624,7 +167,6 @@
             </div>
         </section>
         
-        <!-- 優惠碼區塊 -->
         <section class="coupon-section" id="couponSection">
             <div class="coupon-content">
                 <input type="text" id="couponInput" placeholder="有優惠碼嗎？請在此輸入">
@@ -633,7 +175,6 @@
             <p id="couponMessage" class="coupon-message"></p>
         </section>
 
-        <!-- 申請按鈕 -->
         <section class="apply-section" id="applySection">
             <div class="apply-section-content">
                  <button class="apply-button" onclick="showPaymentDetails(); document.getElementById('finalCtaSection').style.display = 'block';" disabled id="applyButton">
@@ -642,24 +183,24 @@
             </div>
         </section>
 
-        <!-- 匯款詳細資訊（動態展開） -->
         <section class="payment-details" id="paymentDetails">
             <div class="payment-details-content">
                 <h3>💳 步驟一：完成匯款</h3>
                 <p class="payment-subtitle">請依照以下資訊進行匯款</p>
-                
                 <div class="bank-info-grid">
                     <div class="bank-info-item"><strong>銀行代號：</strong><span>809</span></div>
                     <div class="bank-info-item"><strong>匯款帳號：</strong><span>0060108000009079</span></div>
                     <div class="bank-info-item"><strong>匯款金額：</strong><span class="selected-amount" id="selectedAmount">請選擇方案</span></div>
                 </div>
-
                 <div class="warning-section">
                     <div class="warning-icon">⚠️</div>
                     <h4>步驟二：記下關鍵資訊</h4>
-                    <p>為了順利啟用，請務必記下您匯款時，銀行頁面顯示的：</p>
-                    
+                    <p>為了順利啟用，請務必記下您匯款時，銀行頁面顯示的以下五項資訊：</p>
                     <div class="notice-grid-compact">
+                        <div class="notice-item-compact">
+                            <div class="notice-icon-small">💰</div>
+                            <div class="notice-content-compact"><strong>匯款金額</strong><p>您剛才匯出的確切數字</p></div>
+                        </div>
                         <div class="notice-item-compact">
                             <div class="notice-icon-small">🕐</div>
                             <div class="notice-content-compact"><strong>匯款時間</strong><p>精確到分鐘<br>格式：14:30</p></div>
@@ -668,15 +209,11 @@
                             <div class="notice-icon-small">🏦</div>
                             <div class="notice-content-compact"><strong>帳號後五碼</strong><p>您的匯款帳號末5碼</p></div>
                         </div>
-			<div class="notice-item-compact">
+                        <div class="notice-item-compact">
                             <div class="notice-icon-small">🎟️</div>
                             <div class="notice-content-compact"><strong>優惠碼</strong><p>如果您有使用<br>(大小寫皆可)</p></div>
-                        </div>    
-                        <div class="notice-item-compact">
-                            <div class="notice-icon-small">💰</div>
-                            <div class="notice-content-compact"><strong>匯款金額</strong><p>您剛才匯出的確切數字</p></div>
                         </div>
-                         <div class="notice-item-compact">
+                        <div class="notice-item-compact">
                             <div class="notice-icon-small">📧</div>
                             <div class="notice-content-compact"><strong>您的 Email</strong><p>用於接收啟用碼備份</p></div>
                         </div>
@@ -685,37 +222,29 @@
             </div>
         </section>
 
-        <!-- 行動按鈕 (預設隱藏) -->
         <section class="cta-section" id="finalCtaSection" style="display: none;">
             <h3>步驟三：點我啟用</h3>
             <a href="verify.html" target="_blank" class="cta-button">匯款完成，立即開通軟體</a>
             <p class="cta-subtitle">點擊上方按鈕，輸入您記下的資訊來獲取啟用碼。</p>
         </section>
-
     </div>
 
     <script>
-        // 原始價格與優惠價格
         const originalPrices = { monthly: 50, halfyear: 285, yearly: 540 };
         const discountedPrices = { monthly: 45, halfyear: 255, yearly: 485 };
         let activeCoupon = null;
         let selectedPlan = null;
 
-        // 函數：更新卡片上的價格顯示
         function updatePriceDisplay(prices) {
             document.querySelectorAll('.pricing-card').forEach(card => {
                 const plan = card.dataset.plan;
-                if (plan) {
-                    card.querySelector('.amount').textContent = prices[plan];
-                }
+                if (plan) { card.querySelector('.amount').textContent = prices[plan]; }
             });
-            // 如果已選擇方案，也要更新按鈕和匯款金額
             if (selectedPlan) {
                 selectPlan(document.querySelector(`.pricing-card[data-plan='${selectedPlan.plan}']`));
             }
         }
 
-        // 函數：套用優惠碼
         async function applyCoupon() {
             const couponInput = document.getElementById('couponInput');
             const couponMessage = document.getElementById('couponMessage');
@@ -737,9 +266,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ coupon: couponCode })
                 });
-
                 const data = await response.json();
-
                 if (response.ok) {
                     activeCoupon = couponCode;
                     couponMessage.textContent = `✅ 優惠碼 "${activeCoupon}" 已成功套用！`;
@@ -747,9 +274,7 @@
                     couponInput.disabled = true;
                     couponButton.style.display = 'none';
                     updatePriceDisplay(discountedPrices);
-                } else {
-                    throw new Error(data.error);
-                }
+                } else { throw new Error(data.error); }
             } catch (error) {
                 couponMessage.textContent = `❌ ${error.message}`;
                 couponMessage.className = 'coupon-message error';
@@ -759,21 +284,17 @@
             }
         }
         
-        // 函數：選擇方案
         function selectPlan(card) {
             document.querySelectorAll('.pricing-card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
-            
             const currentPrices = activeCoupon ? discountedPrices : originalPrices;
             const plan = card.dataset.plan;
-
             selectedPlan = {
                 plan: plan,
                 amount: currentPrices[plan],
                 days: card.dataset.days,
                 coupon: activeCoupon
             };
-            
             const applyButton = document.getElementById('applyButton');
             applyButton.disabled = false;
             applyButton.textContent = `申請訂閱 - NT$${selectedPlan.amount}`;
@@ -781,20 +302,17 @@
             document.getElementById('paymentDetails').classList.remove('expanded');
         }
 
-        // 函數：顯示匯款詳情
         function showPaymentDetails() {
             if (!selectedPlan) return;
-            
             const paymentDetails = document.getElementById('paymentDetails');
             document.getElementById('selectedAmount').textContent = `NT$ ${selectedPlan.amount}`;
             paymentDetails.classList.add('expanded');
-            
+            document.getElementById('finalCtaSection').style.display = 'block';
             setTimeout(() => {
                 paymentDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 300);
         }
 
-        // (原本的主題切換、平滑滾動等功能保持不變)
         function toggleTheme() {
             const body = document.body;
             const themeToggle = document.getElementById('themeToggle');
