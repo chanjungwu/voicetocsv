@@ -6,47 +6,17 @@
     <title>訂閱專業版 - 語音控制CSV修改系統</title>
     <style>
         :root {
-            /* 深色主題 */
-            --bg-color: #121212;
-            --card-color: #1e1e1e;
-            --primary-text: #e0e0e0;
-            --secondary-text: #b0b0b0;
-            --accent-color: #FFD60A;
-            --accent-text: #121212;
-            --success-color: #30D158;
-            --error-color: #FF3B30;
-            --border-color: #333;
-            --input-bg: #2c2c2e;
+            --bg-color: #121212; --card-color: #1e1e1e; --primary-text: #e0e0e0; --secondary-text: #b0b0b0;
+            --accent-color: #FFD60A; --accent-text: #121212; --success-color: #30D158; --error-color: #FF3B30;
+            --border-color: #333; --input-bg: #2c2c2e;
         }
         [data-theme="light"] {
-            --bg-color: #ffffff;
-            --card-color: #f8f9fa;
-            --primary-text: #212529;
-            --secondary-text: #6c757d;
-            --accent-color: #ffc107;
-            --accent-text: #000000;
-            --success-color: #28a745;
-            --border-color: #dee2e6;
-            --input-bg: #ffffff;
+            --bg-color: #ffffff; --card-color: #f8f9fa; --primary-text: #212529; --secondary-text: #6c757d;
+            --accent-color: #ffc107; --accent-text: #000000; --success-color: #28a745; --border-color: #dee2e6; --input-bg: #ffffff;
         }
-        body {
-            font-family: 'Segoe UI', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--primary-text);
-            line-height: 1.7;
-            transition: all 0.3s ease;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .theme-toggle {
-            position: fixed; top: 20px; right: 20px; background-color: var(--card-color); border: 2px solid var(--border-color); border-radius: 50px;
-            padding: 10px 15px; cursor: pointer; font-size: 18px; transition: all 0.3s ease; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
+        body { font-family: 'Segoe UI', 'Microsoft JhengHei', 'PingFang TC', sans-serif; margin: 0; padding: 0; background-color: var(--bg-color); color: var(--primary-text); line-height: 1.7; transition: all 0.3s ease; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .theme-toggle { position: fixed; top: 20px; right: 20px; background-color: var(--card-color); border: 2px solid var(--border-color); border-radius: 50px; padding: 10px 15px; cursor: pointer; font-size: 18px; transition: all 0.3s ease; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .theme-toggle:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
         .back-button { margin-bottom: 30px; display: inline-block; }
         .back-button a { color: var(--accent-color); text-decoration: none; font-size: 16px; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; }
@@ -76,7 +46,7 @@
         .apply-button:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4); }
         .apply-button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         .payment-details { max-height: 0; overflow: hidden; transition: all 0.5s ease; opacity: 0; }
-        .payment-details.expanded { max-height: 1200px; opacity: 1; margin-top: 40px; } /* Increased max-height */
+        .payment-details.expanded { max-height: 1200px; opacity: 1; margin-top: 40px; }
         .payment-details-content { background: linear-gradient(135deg, var(--card-color) 0%, var(--bg-color) 100%); border: 2px solid var(--accent-color); border-radius: 16px; padding: 40px; max-width: 700px; margin: 0 auto; }
         .payment-details h3 { color: var(--accent-color); text-align: center; font-size: 28px; margin-bottom: 15px; }
         .payment-subtitle { text-align: center; color: var(--secondary-text); margin-bottom: 30px; font-size: 16px; }
@@ -94,6 +64,9 @@
         .notice-icon-small { font-size: 28px; margin-bottom: 10px; color: var(--accent-color); }
         .notice-content-compact strong { display: block; color: var(--primary-text); font-size: 14px; margin-bottom: 5px; }
         .notice-content-compact p { color: var(--secondary-text); font-size: 12px; margin: 0; line-height: 1.4; }
+        .verification-steps { text-align: left; margin-top: 25px; padding: 20px; background-color: var(--bg-color); border: 1px dashed var(--accent-color); border-radius: 8px; }
+        .verification-steps h5 { margin: 0 0 10px 0; color: var(--primary-text); font-size: 16px; }
+        .verification-steps p { margin: 0; color: var(--secondary-text); font-size: 14px; line-height: 1.6; }
         .cta-section { text-align: center; margin: 60px 0; }
         .cta-section h3 { color: var(--accent-color); margin-bottom: 15px; }
         .cta-button { display: inline-block; background: linear-gradient(135deg, var(--accent-color) 0%, #ff9500 100%); color: var(--accent-text); padding: 20px 50px; border-radius: 50px; text-decoration: none; font-size: 20px; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(255, 193, 7, 0.3); }
@@ -177,7 +150,7 @@
 
         <section class="apply-section" id="applySection">
             <div class="apply-section-content">
-                 <button class="apply-button" onclick="showPaymentDetails(); document.getElementById('finalCtaSection').style.display = 'block';" disabled id="applyButton">
+                 <button class="apply-button" onclick="showPaymentDetails();" disabled id="applyButton">
                     請先選擇方案
                 </button>
             </div>
@@ -217,6 +190,12 @@
                             <div class="notice-icon-small">📧</div>
                             <div class="notice-content-compact"><strong>您的 Email</strong><p>用於接收啟用碼備份</p></div>
                         </div>
+                    </div>
+                     <div class="verification-steps">
+                        <h5>下一步？驗證流程說明</h5>
+                        <p>
+                            完成匯款後，請點擊下方的「<b>匯款完成，立即開通軟體</b>」按鈕。在驗證頁面，只需輸入您剛剛記下的資訊，系統就會自動比對並立即發放您的專屬啟用碼。
+                        </p>
                     </div>
                 </div>
             </div>
