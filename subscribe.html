@@ -6,19 +6,48 @@
     <title>訂閱專業版 - 語音控制CSV修改系統</title>
     <style>
         :root {
-            /* ... (CSS 变数与之前相同) ... */
+            /* 深色主題 */
+            --bg-color: #121212;
+            --card-color: #1e1e1e;
+            --primary-text: #e0e0e0;
+            --secondary-text: #b0b0b0;
+            --accent-color: #FFD60A;
+            --accent-text: #121212;
+            --success-color: #30D158;
+            --error-color: #FF3B30;
+            --border-color: #333;
+            --input-bg: #2c2c2e;
         }
         [data-theme="light"] {
-            /* ... (亮色主题与之前相同) ... */
+            --bg-color: #ffffff;
+            --card-color: #f8f9fa;
+            --primary-text: #212529;
+            --secondary-text: #6c757d;
+            --accent-color: #ffc107;
+            --accent-text: #000000;
+            --success-color: #28a745;
+            --border-color: #dee2e6;
+            --input-bg: #ffffff;
         }
         body {
             font-family: 'Segoe UI', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
-            margin: 0; padding: 0; background-color: var(--bg-color); color: var(--primary-text);
-            line-height: 1.7; transition: all 0.3s ease;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            line-height: 1.7;
+            transition: all 0.3s ease;
         }
-        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
-        .theme-toggle { position: fixed; top: 20px; right: 20px; background-color: var(--card-color); border: 2px solid var(--border-color); border-radius: 50px; padding: 10px 15px; cursor: pointer; font-size: 18px; transition: all 0.3s ease; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .theme-toggle:hover { transform: scale(1.05); }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .theme-toggle {
+            position: fixed; top: 20px; right: 20px; background-color: var(--card-color); border: 2px solid var(--border-color); border-radius: 50px;
+            padding: 10px 15px; cursor: pointer; font-size: 18px; transition: all 0.3s ease; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .theme-toggle:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
         .back-button { margin-bottom: 30px; display: inline-block; }
         .back-button a { color: var(--accent-color); text-decoration: none; font-size: 16px; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; }
         .back-button a:hover { color: var(--primary-text); }
@@ -30,48 +59,45 @@
         .pricing-card { background-color: var(--card-color); border: 2px solid var(--border-color); border-radius: 16px; padding: 40px 30px; position: relative; transition: all 0.3s ease; text-align: center; cursor: pointer; }
         .pricing-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
         .pricing-card.selected { border-color: var(--accent-color); background: linear-gradient(135deg, var(--card-color) 0%, rgba(255, 214, 10, 0.1) 100%); box-shadow: 0 15px 40px rgba(255, 193, 7, 0.2); transform: translateY(-8px); }
-        .popular-badge { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--accent-color) 0%, #ff9500 100%); color: var(--accent-text); padding: 8px 24px; border-radius: 25px; font-size: 14px; font-weight: bold; }
-        .pricing-header h3 { font-size: 28px; margin-bottom: 20px; }
+        .popular-badge { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--accent-color) 0%, #ff9500 100%); color: var(--accent-text); padding: 8px 24px; border-radius: 25px; font-size: 14px; font-weight: bold; box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3); }
+        .pricing-header h3 { font-size: 28px; margin-bottom: 20px; color: var(--primary-text); }
         .price { margin-bottom: 15px; }
+        .price .currency { font-size: 20px; color: var(--secondary-text); vertical-align: top; }
         .price .amount { font-size: 56px; font-weight: bold; color: var(--accent-color); }
-        .price .currency, .price .period { font-size: 20px; color: var(--secondary-text); }
+        .price .period { font-size: 20px; color: var(--secondary-text); }
         .savings { color: var(--success-color); font-size: 16px; font-weight: bold; margin-bottom: 25px; }
         .pricing-features { text-align: left; margin-bottom: 30px; }
-        .feature-item { padding: 10px 0; display: flex; align-items: center; gap: 10px; }
+        .feature-item { padding: 10px 0; color: var(--primary-text); font-size: 16px; display: flex; align-items: center; gap: 10px; }
         .selection-indicator { position: absolute; top: 15px; right: 15px; width: 24px; height: 24px; border: 2px solid var(--border-color); border-radius: 50%; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
         .pricing-card.selected .selection-indicator { background-color: var(--accent-color); border-color: var(--accent-color); color: var(--accent-text); font-weight: bold; }
         .apply-section { text-align: center; margin: 40px 0; opacity: 0; transition: all 0.5s ease; transform: translateY(20px); }
         .apply-section.visible { opacity: 1; transform: translateY(0); }
         .apply-button { background: linear-gradient(135deg, var(--accent-color) 0%, #ff9500 100%); color: var(--accent-text); padding: 18px 40px; border: none; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(255, 193, 7, 0.3); }
-        .apply-button:hover { transform: translateY(-3px); }
+        .apply-button:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4); }
         .apply-button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-        .payment-details { max-height: 0; overflow: hidden; transition: all 0.5s ease-in-out; opacity: 0; }
-        /* 【排版修正】增加展开后的最大高度 */
-        .payment-details.expanded { max-height: 1500px; opacity: 1; margin-top: 40px; }
+        .payment-details { max-height: 0; overflow: hidden; transition: all 0.5s ease; opacity: 0; }
+        .payment-details.expanded { max-height: 1200px; opacity: 1; margin-top: 40px; } /* Increased max-height */
         .payment-details-content { background: linear-gradient(135deg, var(--card-color) 0%, var(--bg-color) 100%); border: 2px solid var(--accent-color); border-radius: 16px; padding: 40px; max-width: 700px; margin: 0 auto; }
         .payment-details h3 { color: var(--accent-color); text-align: center; font-size: 28px; margin-bottom: 15px; }
         .payment-subtitle { text-align: center; color: var(--secondary-text); margin-bottom: 30px; font-size: 16px; }
         .bank-info-grid { display: grid; gap: 20px; margin-bottom: 30px; }
         .bank-info-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background-color: var(--card-color); border-radius: 8px; border: 1px solid var(--border-color); }
-        .bank-info-item strong { color: var(--secondary-text); }
-        .bank-info-item span { color: var(--primary-text); font-weight: bold; font-family: 'Consolas', monospace; }
+        .bank-info-item strong { color: var(--secondary-text); font-weight: 600; }
+        .bank-info-item span { color: var(--primary-text); font-weight: bold; font-family: 'Consolas', 'Courier New', monospace; }
         .selected-amount { color: var(--accent-color); font-size: 20px; }
         .warning-section { background: rgba(255, 193, 7, 0.1); border: 2px solid var(--accent-color); border-radius: 12px; padding: 30px; margin: 30px 0; text-align: center; }
         .warning-icon { font-size: 32px; margin-bottom: 15px; }
         .warning-section h4 { color: var(--accent-color); font-size: 20px; margin-bottom: 15px; }
         .warning-section p { color: var(--primary-text); font-size: 16px; margin: 0 auto 25px auto; max-width: 500px; }
-        .notice-grid-compact { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; justify-content: center; }
-        .notice-item-compact { text-align: center; padding: 20px 10px; background-color: var(--bg-color); border-radius: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; }
+        .notice-grid-compact { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-top: 20px; justify-content: center; }
+        .notice-item-compact { text-align: center; padding: 20px 10px; background-color: var(--bg-color); border-radius: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
         .notice-icon-small { font-size: 28px; margin-bottom: 10px; color: var(--accent-color); }
         .notice-content-compact strong { display: block; color: var(--primary-text); font-size: 14px; margin-bottom: 5px; }
         .notice-content-compact p { color: var(--secondary-text); font-size: 12px; margin: 0; line-height: 1.4; }
-        .verification-steps { text-align: left; margin-top: 25px; padding: 20px; background-color: var(--bg-color); border: 1px dashed var(--accent-color); border-radius: 8px; }
-        .verification-steps h5 { margin: 0 0 10px 0; font-size: 16px; }
-        .verification-steps p { margin: 0; color: var(--secondary-text); font-size: 14px; line-height: 1.6; }
         .cta-section { text-align: center; margin: 60px 0; }
         .cta-section h3 { color: var(--accent-color); margin-bottom: 15px; }
         .cta-button { display: inline-block; background: linear-gradient(135deg, var(--accent-color) 0%, #ff9500 100%); color: var(--accent-text); padding: 20px 50px; border-radius: 50px; text-decoration: none; font-size: 20px; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(255, 193, 7, 0.3); }
-        .cta-button:hover { transform: translateY(-3px); }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4); }
         .cta-subtitle { margin-top: 20px; color: var(--secondary-text); font-size: 16px; }
         .coupon-section { text-align: center; margin: -20px 0 40px 0; max-width: 400px; margin-left: auto; margin-right: auto; }
         .coupon-content { display: flex; gap: 10px; }
@@ -81,9 +107,10 @@
         .coupon-message.success { color: var(--success-color); }
         .coupon-message.error { color: var(--error-color); }
         @media (max-width: 768px) {
+            .theme-toggle { top: 15px; right: 15px; padding: 8px 12px; font-size: 16px; }
             .header h1 { font-size: 36px; }
-            .pricing-grid { grid-template-columns: 1fr; }
-            .notice-grid-compact { grid-template-columns: repeat(2, 1fr); }
+            .pricing-grid { grid-template-columns: 1fr; gap: 20px; }
+            .notice-grid-compact { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .payment-details-content { padding: 25px; }
             .cta-button { padding: 15px 35px; font-size: 18px; }
         }
@@ -104,7 +131,7 @@
 
         <section class="pricing-section">
             <div class="pricing-grid">
-                <div class="pricing-card" data-plan="monthly" onclick="selectPlan(this)">
+                <div class="pricing-card" data-plan="monthly" data-amount="50" data-days="30" onclick="selectPlan(this)">
                     <div class="selection-indicator">✓</div>
                     <div class="pricing-header"><h3>月費方案</h3><div class="price"><span class="currency">NT$</span><span class="amount">50</span><span class="period">/月</span></div></div>
                     <div class="pricing-features">
@@ -114,7 +141,7 @@
                         <div class="feature-item"><span>✓</span><span>基礎技術支援</span></div>
                     </div>
                 </div>
-                <div class="pricing-card featured" data-plan="halfyear" onclick="selectPlan(this)">
+                <div class="pricing-card featured" data-plan="halfyear" data-amount="285" data-days="180" onclick="selectPlan(this)">
                     <div class="popular-badge">最受歡迎</div><div class="selection-indicator">✓</div>
                     <div class="pricing-header"><h3>半年方案</h3><div class="price"><span class="currency">NT$</span><span class="amount">285</span><span class="period">/6個月</span></div><div class="savings">省下 NT$15 💰</div></div>
                     <div class="pricing-features">
@@ -125,7 +152,7 @@
                         <div class="feature-item"><span>✓</span><span>功能更新優先體驗</span></div>
                     </div>
                 </div>
-                <div class="pricing-card" data-plan="yearly" onclick="selectPlan(this)">
+                <div class="pricing-card" data-plan="yearly" data-amount="540" data-days="365" onclick="selectPlan(this)">
                     <div class="selection-indicator">✓</div>
                     <div class="pricing-header"><h3>年費方案</h3><div class="price"><span class="currency">NT$</span><span class="amount">540</span><span class="period">/年</span></div><div class="savings">省下 NT$60 🎯</div></div>
                     <div class="pricing-features">
@@ -150,7 +177,7 @@
 
         <section class="apply-section" id="applySection">
             <div class="apply-section-content">
-                 <button class="apply-button" onclick="showPaymentDetails();" disabled id="applyButton">
+                 <button class="apply-button" onclick="showPaymentDetails(); document.getElementById('finalCtaSection').style.display = 'block';" disabled id="applyButton">
                     請先選擇方案
                 </button>
             </div>
@@ -159,7 +186,7 @@
         <section class="payment-details" id="paymentDetails">
             <div class="payment-details-content">
                 <h3>💳 步驟一：完成匯款</h3>
-                <p class="payment-subtitle">請依照以下資訊進行匯款</p>
+                <p class="payment-subtitle">當您依照以下資訊匯款後，點選"匯款完成，立即開通軟體"。填寫匯款帳號後5碼、匯款日期時間、優惠碼(如果有)即可獲取開通驗證碼。</p>
                 <div class="bank-info-grid">
                     <div class="bank-info-item"><strong>銀行代號：</strong><span>809</span></div>
                     <div class="bank-info-item"><strong>匯款帳號：</strong><span>0060108000009079</span></div>
@@ -190,12 +217,6 @@
                             <div class="notice-icon-small">📧</div>
                             <div class="notice-content-compact"><strong>您的 Email</strong><p>用於接收啟用碼備份</p></div>
                         </div>
-                    </div>
-                     <div class="verification-steps">
-                        <h5>下一步？驗證流程說明</h5>
-                        <p>
-                            完成匯款後，請點擊下方的「<b>匯款完成，立即開通軟體</b>」按鈕。在驗證頁面，只需輸入您剛剛記下的資訊，系統就會自動比對並立即發放您的專屬啟用碼。
-                        </p>
                     </div>
                 </div>
             </div>
