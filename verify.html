@@ -5,8 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>開通軟體 - 語音控制CSV修改系統</title>
     <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        /* 額外加入主題切換按鈕的樣式，以防 style.css 未包含 */
+        .theme-toggle {
+            position: fixed; top: 20px; right: 20px; background-color: var(--card-color); border: 2px solid var(--border-color);
+            border-radius: 50px; padding: 10px 15px; cursor: pointer; font-size: 18px; transition: all 0.3s ease; z-index: 1000;
+        }
+        /* 定義亮色主題 */
+        [data-theme="light"] {
+            --bg-color: #ffffff; --card-color: #f8f9fa; --primary-text: #212529; --secondary-text: #6c757d;
+            --accent-color: #ffc107; --accent-text: #000000; --success-color: #28a745; --error-color: #dc3545;
+            --border-color: #dee2e6; --input-bg: #ffffff;
+        }
+        [data-theme="light"] .result-card.error { background-color: rgba(220, 53, 69, 0.1); border: 1px solid var(--error-color); }
+    </style>
 </head>
-<body data-theme="dark">
+<body>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="切換明暗主題">☀️</button>
     <div class="container">
         <header class="header">
             <h1>🚀 軟體啟用驗證</h1>
@@ -21,7 +36,6 @@
                         <input type="number" id="amount" name="amount" placeholder="例如：285" required>
                     </div>
                     
-                    <!-- 【新增】優惠碼輸入框 (預設隱藏) -->
                     <div class="form-group" id="coupon-group" style="display: none;">
                         <label for="coupon">您的優惠碼</label>
                         <input type="text" id="coupon" name="coupon" placeholder="請輸入您使用的優惠碼" required>
@@ -63,10 +77,8 @@
         const couponInput = document.getElementById('coupon');
         const timeInput = document.getElementById('time');
 
-        // 【新增】優惠價列表
         const discountedAmounts = [45, 255, 485];
 
-        // 【新增】監聽金額輸入，決定是否顯示優惠碼欄位
         amountInput.addEventListener('input', () => {
             const amount = parseInt(amountInput.value, 10);
             if (discountedAmounts.includes(amount)) {
@@ -78,7 +90,6 @@
             }
         });
 
-        // 自動格式化時間輸入
         timeInput.addEventListener('input', (e) => {
             let value = e.target.value.replace(/[^0-9]/g, '');
             if (value.length > 2) {
@@ -100,7 +111,6 @@
                 time: timeInput.value,
                 account: document.getElementById('account').value,
                 email: document.getElementById('email').value,
-                // 【新增】如果優惠碼欄位可見，就將其值加入
                 coupon: couponInput.required ? couponInput.value.trim().toUpperCase() : null
             };
 
@@ -110,32 +120,50 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData),
                 });
-
                 const data = await response.json();
-
                 if (response.ok) {
                     resultDiv.className = 'result-card success';
-                    resultDiv.innerHTML = `
-                        <h3>✅ 驗證成功！</h3>
-                        <p>這是您的專屬啟用碼，請妥善保管：</p>
-                        <div class="activation-code">${data.activationCode}</div>
-                        <p class="small-text">我們也將啟用碼寄送至您的Email信箱作為備份。</p>
-                    `;
+                    resultDiv.innerHTML = `<h3>✅ 驗證成功！</h3><p>這是您的專屬啟用碼，請妥善保管：</p><div class="activation-code">${data.activationCode}</div><p class="small-text">我們也將啟用碼寄送至您的Email信箱作為備份。</p>`;
                 } else {
                     throw new Error(data.error || '發生未知錯誤');
                 }
             } catch (error) {
                 resultDiv.className = 'result-card error';
-                resultDiv.innerHTML = `
-                    <h3>❌ 驗證失敗</h3>
-                    <p>${error.message}</p>
-                    <p class="small-text">請檢查您輸入的資料是否與匯款紀錄完全相符。如果問題持續，請聯繫客服。</p>
-                `;
+                resultDiv.innerHTML = `<h3>❌ 驗證失敗</h3><p>${error.message}</p><p class="small-text">請檢查您輸入的資料是否與匯款紀錄完全相符。如果問題持續，請聯繫客服。</p>`;
             } finally {
                 resultDiv.style.display = 'block';
                 submitButton.disabled = false;
                 submitButton.textContent = '驗證並取得啟用碼';
                 resultDiv.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        // 主題切換功能
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            if (body.getAttribute('data-theme') === 'light') {
+                body.removeAttribute('data-theme');
+                if(themeToggle) themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.setAttribute('data-theme', 'light');
+                if(themeToggle) themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // 頁面載入時檢查儲存的主題設定
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if (savedTheme === 'dark') {
+                document.body.removeAttribute('data-theme');
+                if(themeToggle) themeToggle.textContent = '🌙';
+            } else {
+                document.body.setAttribute('data-theme', 'light');
+                if(themeToggle) themeToggle.textContent = '☀️';
             }
         });
     </script>
