@@ -14,6 +14,7 @@
             --accent-color: #FFD60A;
             --accent-text: #121212;
             --success-color: #30D158;
+            --error-color: #FF3B30;
             --border-color: #333;
             --input-bg: #2c2c2e;
         }
@@ -495,6 +496,55 @@
             color: var(--secondary-text);
             font-size: 16px;
         }
+        
+        /* 優惠碼區塊樣式 */
+        .coupon-section {
+            text-align: center;
+            margin: -20px 0 40px 0;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .coupon-content {
+            display: flex;
+            gap: 10px;
+        }
+
+        #couponInput {
+            flex-grow: 1;
+            padding: 12px 15px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--primary-text);
+            font-size: 16px;
+        }
+
+        #couponButton {
+            padding: 12px 25px;
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .coupon-message {
+            margin-top: 10px;
+            font-size: 14px;
+            height: 20px; /* 佔據一個固定高度 */
+        }
+        
+        .coupon-message.success {
+            color: var(--success-color);
+        }
+
+        .coupon-message.error {
+            color: var(--error-color);
+        }
 
         /* 響應式設計 */
         @media (max-width: 768px) {
@@ -522,7 +572,7 @@
                 transform: translateY(-8px);
             }
 
-            .notice-grid {
+.notice-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
             }
@@ -578,103 +628,69 @@
                         </div>
                     </div>
                     <div class="pricing-features">
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>完整語音識別功能</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>無限制CSV檔案數量</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>30天使用期限</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>基礎技術支援</span>
-                        </div>
+                        <div class="feature-item"><span>✓</span><span>完整語音識別功能</span></div>
+                        <div class="feature-item"><span>✓</span><span>無限制CSV檔案數量</span></div>
+                        <div class="feature-item"><span>✓</span><span>30天使用期限</span></div>
+                        <div class="feature-item"><span>✓</span><span>基礎技術支援</span></div>
                     </div>
                 </div>
                 
-                <div class="pricing-card featured" data-plan="halfyear" data-amount="250" data-days="180" onclick="selectPlan(this)">
+                <div class="pricing-card featured" data-plan="halfyear" data-amount="285" data-days="180" onclick="selectPlan(this)">
                     <div class="popular-badge">最受歡迎</div>
                     <div class="selection-indicator">✓</div>
                     <div class="pricing-header">
                         <h3>半年方案</h3>
                         <div class="price">
                             <span class="currency">NT$</span>
-                            <span class="amount">250</span>
+                            <span class="amount">285</span>
                             <span class="period">/6個月</span>
                         </div>
-                        <div class="savings">省下 NT$50 💰</div>
+                        <div class="savings">省下 NT$15 💰</div>
                     </div>
                     <div class="pricing-features">
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>完整語音識別功能</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>無限制CSV檔案數量</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>180天使用期限</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>優先客服支援</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>功能更新優先體驗</span>
-                        </div>
+                        <div class="feature-item"><span>✓</span><span>完整語音識別功能</span></div>
+                        <div class="feature-item"><span>✓</span><span>無限制CSV檔案數量</span></div>
+                        <div class="feature-item"><span>✓</span><span>180天使用期限</span></div>
+                        <div class="feature-item"><span>✓</span><span>優先客服支援</span></div>
+                        <div class="feature-item"><span>✓</span><span>功能更新優先體驗</span></div>
                     </div>
                 </div>
                 
-                <div class="pricing-card" data-plan="yearly" data-amount="400" data-days="365" onclick="selectPlan(this)">
+                <div class="pricing-card" data-plan="yearly" data-amount="540" data-days="365" onclick="selectPlan(this)">
                     <div class="selection-indicator">✓</div>
                     <div class="pricing-header">
                         <h3>年費方案</h3>
                         <div class="price">
                             <span class="currency">NT$</span>
-                            <span class="amount">400</span>
+                            <span class="amount">540</span>
                             <span class="period">/年</span>
                         </div>
-                        <div class="savings">省下 NT$200 🎯</div>
+                        <div class="savings">省下 NT$60 🎯</div>
                     </div>
                     <div class="pricing-features">
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>完整語音識別功能</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>無限制CSV檔案數量</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>365天使用期限</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>優先客服支援</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>免費功能更新</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>專屬客服專線</span>
-                        </div>
+                        <div class="feature-item"><span>✓</span><span>完整語音識別功能</span></div>
+                        <div class="feature-item"><span>✓</span><span>無限制CSV檔案數量</span></div>
+                        <div class="feature-item"><span>✓</span><span>365天使用期限</span></div>
+                        <div class="feature-item"><span>✓</span><span>優先客服支援</span></div>
+                        <div class="feature-item"><span>✓</span><span>免費功能更新</span></div>
+                        <div class="feature-item"><span>✓</span><span>專屬客服專線</span></div>
                     </div>
                 </div>
             </div>
+        </section>
+        
+        <!-- 優惠碼區塊 -->
+        <section class="coupon-section" id="couponSection">
+            <div class="coupon-content">
+                <input type="text" id="couponInput" placeholder="有優惠碼嗎？請在此輸入">
+                <button onclick="applyCoupon()" id="couponButton">套用</button>
+            </div>
+            <p id="couponMessage" class="coupon-message"></p>
+        </section>
 
-            <!-- 申請按鈕 -->
-            <div class="apply-section" id="applySection">
+        <!-- 申請按鈕 -->
+        <section class="apply-section" id="applySection">
+            <div class="apply-section-content">
                 <button class="apply-button" onclick="showPaymentDetails()" disabled id="applyButton">
                     請先選擇方案
                 </button>
@@ -688,18 +704,9 @@
                 <p class="payment-subtitle">請依照以下資訊進行匯款</p>
                 
                 <div class="bank-info-grid">
-                    <div class="bank-info-item">
-                        <strong>銀行代號：</strong>
-                        <span>809</span>
-                    </div>
-                    <div class="bank-info-item">
-                        <strong>匯款帳號：</strong>
-                        <span>0060108000009079</span>
-                    </div>
-                    <div class="bank-info-item">
-                        <strong>匯款金額：</strong>
-                        <span class="selected-amount" id="selectedAmount">請選擇方案</span>
-                    </div>
+                    <div class="bank-info-item"><strong>銀行代號：</strong><span>809</span></div>
+                    <div class="bank-info-item"><strong>匯款帳號：</strong><span>0060108000009079</span></div>
+                    <div class="bank-info-item"><strong>匯款金額：</strong><span class="selected-amount" id="selectedAmount">請選擇方案</span></div>
                 </div>
 
                 <div class="warning-section">
@@ -711,31 +718,19 @@
                     <div class="notice-grid-compact">
                         <div class="notice-item-compact">
                             <div class="notice-icon-small">🕐</div>
-                            <div class="notice-content-compact">
-                                <strong>匯款時間</strong>
-                                <p>精確到分鐘<br>格式：2025/07/24 23:06</p>
-                            </div>
+                            <div class="notice-content-compact"><strong>匯款時間</strong><p>精確到分鐘<br>格式：2025/07/24 23:06</p></div>
                         </div>
                         <div class="notice-item-compact">
                             <div class="notice-icon-small">💰</div>
-                            <div class="notice-content-compact">
-                                <strong>匯款金額</strong>
-                                <p>請記住確切數字<br>例如：250</p>
-                            </div>
+                            <div class="notice-content-compact"><strong>匯款金額</strong><p>請記住確切數字<br>例如：250</p></div>
                         </div>
                         <div class="notice-item-compact">
                             <div class="notice-icon-small">🏦</div>
-                            <div class="notice-content-compact">
-                                <strong>帳號後五碼</strong>
-                                <p>您的匯款帳號後五碼<br>用於身份驗證</p>
-                            </div>
+                            <div class="notice-content-compact"><strong>帳號後五碼</strong><p>您的匯款帳號後五碼<br>用於身份驗證</p></div>
                         </div>
                         <div class="notice-item-compact">
                             <div class="notice-icon-small">📧</div>
-                            <div class="notice-content-compact">
-                                <strong>Email地址</strong>
-                                <p>準備您的常用信箱<br>接收授權資訊</p>
-                            </div>
+                            <div class="notice-content-compact"><strong>Email地址</strong><p>準備您的常用信箱<br>接收授權資訊</p></div>
                         </div>
                     </div>
                 </div>
@@ -750,105 +745,135 @@
     </div>
 
     <script>
+        // 原始價格與優惠價格
+        const originalPrices = { monthly: 50, halfyear: 285, yearly: 540 };
+        const discountedPrices = { monthly: 45, halfyear: 255, yearly: 485 };
+        let activeCoupon = null;
         let selectedPlan = null;
 
-        // 選擇方案功能
-        function selectPlan(card) {
-            // 移除所有選中狀態
-            document.querySelectorAll('.pricing-card').forEach(c => {
-                c.classList.remove('selected');
+        // 函數：更新卡片上的價格顯示
+        function updatePriceDisplay(prices) {
+            document.querySelectorAll('.pricing-card').forEach(card => {
+                const plan = card.dataset.plan;
+                if (plan) {
+                    card.querySelector('.amount').textContent = prices[plan];
+                }
             });
-            
-            // 設置當前選中
-            card.classList.add('selected');
-            selectedPlan = {
-                plan: card.dataset.plan,
-                amount: card.dataset.amount,
-                days: card.dataset.days
-            };
-            
-            // 更新申請按鈕
-            const applyButton = document.getElementById('applyButton');
-            const applySection = document.getElementById('applySection');
-            
-            applyButton.disabled = false;
-            applyButton.textContent = `申請訂閱 - NT${selectedPlan.amount}`;
-            applySection.classList.add('visible');
-            
-            // 隱藏匯款詳情（如果已展開）
-            const paymentDetails = document.getElementById('paymentDetails');
-            paymentDetails.classList.remove('expanded');
+            // 如果已選擇方案，也要更新按鈕和匯款金額
+            if (selectedPlan) {
+                selectPlan(document.querySelector(`.pricing-card[data-plan='${selectedPlan.plan}']`));
+            }
         }
 
-        // 顯示匯款詳情
+        // 函數：套用優惠碼
+        async function applyCoupon() {
+            const couponInput = document.getElementById('couponInput');
+            const couponMessage = document.getElementById('couponMessage');
+            const couponButton = document.getElementById('couponButton');
+            const couponCode = couponInput.value.trim().toUpperCase();
+
+            if (!couponCode) {
+                couponMessage.textContent = '請輸入優惠碼';
+                couponMessage.className = 'coupon-message error';
+                return;
+            }
+
+            couponButton.textContent = '驗證中...';
+            couponButton.disabled = true;
+
+            try {
+                const response = await fetch('/api/check-coupon', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ coupon: couponCode })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    activeCoupon = couponCode;
+                    couponMessage.textContent = `✅ 優惠碼 "${activeCoupon}" 已成功套用！`;
+                    couponMessage.className = 'coupon-message success';
+                    couponInput.disabled = true;
+                    couponButton.style.display = 'none';
+                    updatePriceDisplay(discountedPrices);
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (error) {
+                couponMessage.textContent = `❌ ${error.message}`;
+                couponMessage.className = 'coupon-message error';
+            } finally {
+                couponButton.textContent = '套用';
+                couponButton.disabled = false;
+            }
+        }
+        
+        // 函數：選擇方案
+        function selectPlan(card) {
+            document.querySelectorAll('.pricing-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            
+            const currentPrices = activeCoupon ? discountedPrices : originalPrices;
+            const plan = card.dataset.plan;
+
+            selectedPlan = {
+                plan: plan,
+                amount: currentPrices[plan],
+                days: card.dataset.days,
+                coupon: activeCoupon
+            };
+            
+            const applyButton = document.getElementById('applyButton');
+            applyButton.disabled = false;
+            applyButton.textContent = `申請訂閱 - NT$${selectedPlan.amount}`;
+            document.getElementById('applySection').classList.add('visible');
+            document.getElementById('paymentDetails').classList.remove('expanded');
+        }
+
+        // 函數：顯示匯款詳情
         function showPaymentDetails() {
             if (!selectedPlan) return;
             
             const paymentDetails = document.getElementById('paymentDetails');
-            const selectedAmount = document.getElementById('selectedAmount');
-            
-            // 更新金額顯示
-            selectedAmount.textContent = `NT$ ${selectedPlan.amount}`;
-            
-            // 展開匯款詳情
+            document.getElementById('selectedAmount').textContent = `NT$ ${selectedPlan.amount}`;
             paymentDetails.classList.add('expanded');
             
-            // 平滑滾動到匯款詳情
             setTimeout(() => {
-                paymentDetails.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+                paymentDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 300);
         }
+
+        // (原本的主題切換、平滑滾動等功能保持不變)
         function toggleTheme() {
             const body = document.body;
             const themeToggle = document.getElementById('themeToggle');
-            
             if (body.getAttribute('data-theme') === 'light') {
-                // 切換到深色主題
                 body.removeAttribute('data-theme');
                 themeToggle.textContent = '🌙';
-                themeToggle.title = '切換到明亮主題';
                 localStorage.setItem('theme', 'dark');
             } else {
-                // 切換到明亮主題
                 body.setAttribute('data-theme', 'light');
                 themeToggle.textContent = '☀️';
-                themeToggle.title = '切換到深色主題';
                 localStorage.setItem('theme', 'light');
             }
         }
-
-        // 頁面載入時檢查儲存的主題設定
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme');
-            const themeToggle = document.getElementById('themeToggle');
-            
             if (savedTheme === 'light') {
                 document.body.setAttribute('data-theme', 'light');
-                themeToggle.textContent = '☀️';
-                themeToggle.title = '切換到深色主題';
+                document.getElementById('themeToggle').textContent = '☀️';
             } else {
-                themeToggle.textContent = '🌙';
-                themeToggle.title = '切換到明亮主題';
+                document.getElementById('themeToggle').textContent = '🌙';
             }
         });
-
-        // 平滑滾動
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+                if (target) { target.scrollIntoView({ behavior: 'smooth' }); }
             });
         });
     </script>
-
 </body>
 </html>
