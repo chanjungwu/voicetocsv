@@ -18,8 +18,15 @@
                 <form id="verify-form">
                     <div class="form-group">
                         <label for="amount">匯款金額 (NT$)</label>
-                        <input type="number" id="amount" name="amount" placeholder="例如：250" required>
+                        <input type="number" id="amount" name="amount" placeholder="例如：285" required>
                     </div>
+                    
+                    <!-- 【新增】優惠碼輸入框 (預設隱藏) -->
+                    <div class="form-group" id="coupon-group" style="display: none;">
+                        <label for="coupon">您的優惠碼</label>
+                        <input type="text" id="coupon" name="coupon" placeholder="請輸入您使用的優惠碼" required>
+                    </div>
+
                     <div class="form-group-inline">
                         <div class="form-group">
                             <label for="date">匯款日期</label>
@@ -27,7 +34,7 @@
                         </div>
                         <div class="form-group">
                             <label for="time">匯款時間 (24小時制)</label>
-                            <input type="text" id="time" name="time" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" placeholder="格式 HH:MM (例如 14:30)" required>
+                            <input type="text" id="time" name="time" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" placeholder="格式 HH:MM" required>
                         </div>
                     </div>
                      <div class="form-group">
@@ -47,15 +54,33 @@
         </main>
     </div>
 
-        <script>
+    <script>
         const form = document.getElementById('verify-form');
         const submitButton = document.getElementById('submit-button');
         const resultDiv = document.getElementById('result');
+        const amountInput = document.getElementById('amount');
+        const couponGroup = document.getElementById('coupon-group');
+        const couponInput = document.getElementById('coupon');
         const timeInput = document.getElementById('time');
 
-        // 【新增功能】自動格式化時間輸入
+        // 【新增】優惠價列表
+        const discountedAmounts = [45, 255, 485];
+
+        // 【新增】監聽金額輸入，決定是否顯示優惠碼欄位
+        amountInput.addEventListener('input', () => {
+            const amount = parseInt(amountInput.value, 10);
+            if (discountedAmounts.includes(amount)) {
+                couponGroup.style.display = 'block';
+                couponInput.required = true;
+            } else {
+                couponGroup.style.display = 'none';
+                couponInput.required = false;
+            }
+        });
+
+        // 自動格式化時間輸入
         timeInput.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/[^0-9]/g, ''); // 只保留數字
+            let value = e.target.value.replace(/[^0-9]/g, '');
             if (value.length > 2) {
                 value = value.substring(0, 2) + ':' + value.substring(2, 4);
             }
@@ -68,23 +93,21 @@
             submitButton.disabled = true;
             submitButton.textContent = '驗證中...';
             resultDiv.style.display = 'none';
-            resultDiv.className = 'result-card';
 
             const formData = {
-                amount: document.getElementById('amount').value,
+                amount: amountInput.value,
                 date: document.getElementById('date').value,
-                time: timeInput.value, // 直接使用 timeInput 的值
+                time: timeInput.value,
                 account: document.getElementById('account').value,
                 email: document.getElementById('email').value,
+                // 【新增】如果優惠碼欄位可見，就將其值加入
+                coupon: couponInput.required ? couponInput.value.trim().toUpperCase() : null
             };
 
             try {
-                // 我們可以將 fetch 的路徑改回相對路徑，這樣比較標準
                 const response = await fetch('/api/verify', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData),
                 });
 
@@ -116,3 +139,5 @@
             }
         });
     </script>
+</body>
+</html>
