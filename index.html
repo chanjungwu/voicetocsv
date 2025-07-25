@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>語音控制CSV修改系統 - 官方網站</title>
+    <style>
+        :root {
+            /* 深色主題 */
+            --bg-color: #121212;
+            --card-color: #1e1e1e;
+            --primary-text: #e0e0e0;
+            --secondary-text: #b0b0b0;
+            --accent-color: #FFD60A;
+            --accent-text: #121212;
+            --success-color: #30D158;
+            --border-color: #333;
+            --input-bg: #2c2c2e;
+        }
+
+        /* 明亮主題 */
+        [data-theme="light"] {
+            --bg-color: #ffffff;
+            --card-color: #f8f9fa;
+            --primary-text: #212529;
+            --secondary-text: #6c757d;
+            --accent-color: #ffc107;
+            --accent-text: #000000;
+            --success-color: #28a745;
+            --border-color: #dee2e6;
+            --input-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            line-height: 1.7;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 主題切換按鈕 */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--card-color);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        /* 導覽列 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .navbar .logo .highlight {
+            color: var(--accent-color);
+        }
+
+        .nav-links a {
+            color: var(--primary-text);
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent-color);
+        }
+        
+        .nav-cta {
+            background-color: var(--accent-color);
+            color: var(--accent-text) !important;
+            padding: 10px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+            color: var(--accent-text) !important;
+        }
+
+        /* 開通軟體按鈕 */
+        .nav-activate {
+            background-color: var(--accent-color);
+            color: var(--accent-text) !important;
+            padding: 10px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .nav-activate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+            color: var(--accent-text) !important;
+        }
+
+        /* 英雄區塊 */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero h1 .highlight {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(255, 214, 10, 0.3);
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--secondary-text);
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        /* 區塊標題 */
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
+            font-weight: bold;
+        }
+        
+        .section-title .highlight {
+            color: var(--accent-color);
+        }
+
+        /* 功能介紹 */
+        #features {
+            padding: 80px 0;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--card-color);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        [data-theme="light"] .feature-card:hover {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .feature-card .icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+        
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: var(--secondary-text);
+            font-size: 16px;
+        }
+        
+        /* 強大範例 */
+        #examples {
+            padding: 80px 0;
+            background-color: var(--card-color);
+        }
+        
+        .example {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 80px;
+        }
+        
+        .example:last-child {
+            margin-bottom: 0;
+        }
+        
+        .example:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .example-text {
+            flex: 1;
+        }
+        
+        .example-text h3 {
+            font-size: 28px;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+        
+        .example-text .scenario {
+            font-style: italic;
+            color: var(--secondary-text);
+            margin-bottom: 20px;
+        }
+        
+        .example-text .command {
+            background-color: var(--input-bg);
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid var(--accent-color);
+            margin-bottom: 20px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            border: 1px solid var(--border-color);
+        }
+        
+        .example-image {
+            flex: 1;
+            background: var(--bg-color);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .example-image h4 {
+            margin-top: 0;
+            text-align: center;
+            color: var(--secondary-text);
+            font-weight: normal;
+            margin-bottom: 15px;
+        }
+        
+        .example-image pre {
+            background-color: var(--input-bg);
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: var(--primary-text);
+            font-size: 14px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .example-image .arrow {
+            text-align: center;
+            font-size: 24px;
+            color: var(--accent-color);
+            margin: 10px 0;
+        }
+        
+        .example-image .highlight-change {
+            background-color: rgba(48, 209, 88, 0.3);
+            color: var(--primary-text);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        /* 訂閱區塊 */
+        #subscribe {
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        #subscribe p {
+            font-size: 18px;
+            color: var(--secondary-text);
+            margin-bottom: 30px;
+        }
+        
+        /* CTA 區塊 */
+        .cta-section {
+            margin-top: 50px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #ff9500 100%);
+            color: var(--accent-text);
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
+        }
+        
+        .cta-subtitle {
+            margin-top: 15px;
+            color: var(--secondary-text);
+            font-size: 14px;
+        }
+        
+        /* 頁尾 */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--secondary-text);
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
+                padding: 8px 12px;
+                font-size: 16px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .example {
+                flex-direction: column !important;
+                gap: 30px;
+            }
+
+            .subscribe-form {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+            
+            .nav-activate,
+            .nav-cta {
+                display: none;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .pricing-card.featured {
+                transform: none;
+            }
+            
+            .notice-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .bank-detail strong {
+                width: 100px;
+                font-size: 16px;
+            }
+            
+            .payment-info-card,
+            .important-notice {
+                margin: 30px 10px;
+                padding: 20px;
+            }
+        }
+
+        // 移除不需要的函數
+        
+
+    </style>
+</head>
+<body>
+    <!-- 主題切換按鈕 -->
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="切換明暗主題">
+        🌙
+    </button>
+
+    <!-- 導覽列 -->
+    <header class="container">
+        <nav class="navbar">
+            <div class="logo">🎙️ <span class="highlight">語音</span>CSV系統</div>
+            <div class="nav-links">
+                <a href="#features">核心功能</a>
+                <a href="#examples">強大範例</a>
+                <a href="verify.html" target="_blank" class="nav-activate">開通軟體</a>
+                <a href="subscribe.html" target="_blank" class="nav-cta">立即訂閱</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- 英雄區塊 -->
+        <section class="hero">
+            <div class="container">
+                <h1>用<span class="highlight">說的</span>，就搞定數據</h1>
+                <p>結合 Google Gemini AI 的強大威力，將您的語音指令直接轉換為精確的表格數據更新。告別繁瑣的手動輸入，迎接效率新時代。</p>
+                <a href="subscribe.html" target="_blank" class="nav-cta">了解更多</a>
+            </div>
+        </section>
+        
+        <!-- 核心功能 -->
+        <section id="features">
+            <div class="container">
+                <h2 class="section-title">軟體<span class="highlight">核心功能</span></h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="icon">🚀</div>
+                        <h3>全自動化工作流程</h3>
+                        <p>只需將語音檔存入指定資料夾，系統便會自動偵測、處理並更新對應的CSV檔案，處理完畢後自動刪除音檔，全程無需人工干預。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">🧠</div>
+                        <h3>頂尖AI智慧識別</h3>
+                        <p>採用 Google Gemini 2.5 Flash 模型，不僅能精準辨識語音內容，更能理解語意，判斷您想修改哪一份檔案、更新哪個欄位。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">⏰</div>
+                        <h3>智慧時間感知</h3>
+                        <p>AI能自動帶入當前日期與時間。當您說「今天請假」或「剛剛完成」，系統會自動記錄下正確的日期，無需您口頭說明。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">⚙️</div>
+                        <h3>智能啟動與背景執行</h3>
+                        <p>設定完成後，軟體可自動在背景啟動並監控。最小化到系統托盤，不打擾您的工作流程，並在處理完成後給予桌面通知。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">🎨</div>
+                        <h3>現代化操作介面</h3>
+                        <p>提供清晰、美觀的深色主題介面，所有執行步驟與結果都在活動日誌中一目了然，讓您隨時掌握系統動態。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">🛡️</div>
+                        <h3>安全穩定的設計</h3>
+                        <p>具備設定檔保存、CSV檔案編碼自動偵測與備份還原機制，確保您的設定與資料在任何情況下都安全無虞。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 強大範例 -->
+        <section id="examples">
+            <div class="container">
+                <h2 class="section-title">它有多<span class="highlight">強大</span>？</h2>
+                
+                <!-- 範例一 -->
+                <div class="example">
+                    <div class="example-text">
+                        <h3>人事考勤管理</h3>
+                        <p class="scenario">情境：主管需要快速記錄員工的臨時請假狀況，無需打開複雜的HR系統。</p>
+                        <p><strong>您的語音指令：</strong></p>
+                        <div class="command">"幫我記一下，李偉今天請事假"</div>
+                        <p>系統將自動辨識「李偉」、「今天」和「事假」，並更新正確的檔案與欄位。</p>
+                    </div>
+                    <div class="example-image">
+                        <h4>員工出勤.csv</h4>
+                        <pre>姓名,2025-07-24,2025-07-25
+張三,正常,正常
+李偉,正常,正常
+王五,正常,正常</pre>
+                        <div class="arrow">⬇️ AI 處理後 ⬇️</div>
+                        <pre>姓名,2025-07-24,2025-07-25
+張三,正常,正常
+李偉,<span class="highlight-change">事假</span>,正常
+王五,正常,正常</pre>
+                    </div>
+                </div>
+
+                <!-- 範例二 -->
+                <div class="example">
+                    <div class="example-text">
+                        <h3>個人健身紀錄</h3>
+                        <p class="scenario">情境：剛跑完步，滿身是汗不想打字，用語音輕鬆記錄成果。</p>
+                        <p><strong>您的語音指令：</strong></p>
+                        <div class="command">"在我的跑步成績上記錄，今天跑了十公里，花了五十五分鐘"</div>
+                        <p>系統會新增一筆包含今日日期、里程與時間的完整紀錄。</p>
+                    </div>
+                    <div class="example-image">
+                        <h4>跑步成績.csv</h4>
+                        <pre>日期,里程(公里),時間(分鐘)
+2025-07-22,5,28</pre>
+                         <div class="arrow">⬇️ AI 處理後 ⬇️</div>
+                        <pre>日期,里程(公里),時間(分鐘)
+2025-07-22,5,28
+<span class="highlight-change">2025-07-24,10,55</span></pre>
+                    </div>
+                </div>
+                
+                <!-- 範例三 -->
+                <div class="example">
+                    <div class="example-text">
+                        <h3>專案進度追蹤</h3>
+                        <p class="scenario">情境：團隊成員回報進度，專案經理用語音直接更新狀態表。</p>
+                        <p><strong>您的語音指令：</strong></p>
+                        <div class="command">"更新專案進度表，把使用者登入介面的狀態改成完成測試"</div>
+                        <p>AI能精準定位到「使用者登入介面」這一項，並將其狀態更新，無需手動尋找。</p>
+                    </div>
+                    <div class="example-image">
+                        <h4>專案進度.csv</h4>
+                        <pre>功能模組,負責人,狀態
+資料庫設計,小陳,已完成
+使用者登入介面,小林,開發中
+支付系統串接,小張,未開始</pre>
+                        <div class="arrow">⬇️ AI 處理後 ⬇️</div>
+                        <pre>功能模組,負責人,狀態
+資料庫設計,小陳,已完成
+使用者登入介面,小林,<span class="highlight-change">完成測試</span>
+支付系統串接,小張,未開始</pre>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        
+        <!-- 訂閱區塊 -->
+        <section id="subscribe">
+            <div class="container">
+                <h2 class="section-title">立即體驗<span class="highlight">專業版</span></h2>
+                <p>準備好讓語音控制改變您的工作效率了嗎？<br>點擊下方按鈕，查看訂閱方案並開始使用！</p>
+                <div class="cta-section">
+                    <a href="subscribe.html" target="_blank" class="cta-button">查看訂閱方案</a>
+                    <p class="cta-subtitle">新視窗開啟，不會影響您目前的瀏覽</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- 頁尾 -->
+    <footer class="footer">
+        <p>&copy; 2025 語音控制CSV修改系統. All Rights Reserved. | Designed for Ultimate Efficiency.</p>
+    </footer>
+
+    <script>
+        // 主題切換功能
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if (body.getAttribute('data-theme') === 'light') {
+                // 切換到深色主題
+                body.removeAttribute('data-theme');
+                themeToggle.textContent = '🌙';
+                themeToggle.title = '切換到明亮主題';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                // 切換到明亮主題
+                body.setAttribute('data-theme', 'light');
+                themeToggle.textContent = '☀️';
+                themeToggle.title = '切換到深色主題';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // 頁面載入時檢查儲存的主題設定
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if (savedTheme === 'dark') {
+                // 只有明確儲存為深色主題才使用深色
+                document.body.removeAttribute('data-theme');
+                themeToggle.textContent = '🌙';
+                themeToggle.title = '切換到明亮主題';
+            } else {
+                // 預設使用明亮主題
+                document.body.setAttribute('data-theme', 'light');
+                themeToggle.textContent = '☀️';
+                themeToggle.title = '切換到深色主題';
+            }
+        });
+
+        // 平滑滾動
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
